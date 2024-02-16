@@ -29,10 +29,12 @@ jobs:
         run: |
           composer validate --no-check-publish
           if ! composer install --dry-run --no-scripts; then
+            echo "The composer.lock file is not up to date with composer.json."
+            echo "Running composer update to synchronize lock file."
             composer update --no-progress
+            echo "Remember to commit the updated composer.lock file to your repository."
           else
             composer install --prefer-dist --no-progress
-          fi
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./*
